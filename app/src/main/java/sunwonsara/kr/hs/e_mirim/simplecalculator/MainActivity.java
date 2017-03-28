@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity /* | 방법 2(*)_1 | implements View.OnClickListener*/ {
     EditText edit_first;
     EditText edit_second;
     TextView textResult;
@@ -24,6 +24,21 @@ public class MainActivity extends AppCompatActivity {
         Button but_division=(Button)findViewById(R.id.but_division);
         textResult=(TextView)findViewById(R.id.text_result);
 
+       /* | 방법 2(*)_2 |
+        but_plus.setOnClickListener(this);
+        but_minus.setOnClickListener(this);
+        but_multiply.setOnClickListener(this);
+        but_division.setOnClickListener(this);
+      */
+
+        // | 방법 3. 익명클래스를 만들기 |
+        but_plus.setOnClickListener(butHandler);
+        but_minus.setOnClickListener(butHandler);
+        but_multiply.setOnClickListener(butHandler);
+        but_division.setOnClickListener(butHandler);
+
+        /*
+        | 방법 1 |
         but_plus.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -59,9 +74,50 @@ public class MainActivity extends AppCompatActivity {
                 textResult.setText((a/b) +"");
             }
         });
+        */
+
+    } // end oncreat
+
+    View.OnClickListener butHandler=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int a = Integer.parseInt(edit_first.getText().toString());
+            int b = Integer.parseInt(edit_second.getText().toString());
+            int result = 0;
+            switch (v.getId()) {
+                case R.id.but_plus:
+                    result = a + b;
+                    break;
+                case R.id.but_minus:
+                    result = a - b;
+                    break;
+                case R.id.but_multiply:
+                    result = a * b;
+                    break;
+                case R.id.but_division:
+                    result = a / b;
+                    break;
+            }
+            textResult.setText(result + "");
+        }
+    };
 
 
+    /* | 방법 2(*)_3 |
+    @Override
+    public void onClick(View v) {
+        int a=Integer.parseInt(edit_first.getText().toString());
+        int b=Integer.parseInt(edit_second.getText().toString());
+        int result=0;
+        switch (v.getId()){
+            case R.id.but_plus : result=a+b; break;
+            case R.id.but_minus : result=a-b; break;
+            case R.id.but_multiply : result=a*b; break;
+            case R.id.but_division : result=a/b; break;
+        }
+        textResult.setText(result+"");
     }
+    */
 
 
 }
